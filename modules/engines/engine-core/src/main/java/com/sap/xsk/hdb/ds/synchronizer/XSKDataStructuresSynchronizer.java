@@ -98,7 +98,7 @@ public class XSKDataStructuresSynchronizer extends AbstractSynchronizer {
     private static final Map<String, XSKDataStructureHDBTableFunctionModel> TABLEFUNCTIONS_PREDELIVERED = Collections
             .synchronizedMap(new HashMap<String, XSKDataStructureHDBTableFunctionModel>());
     private static final Map<String, XSKDataStructureHDBSchemaModel> SCHEMAS_PREDELIVERED = Collections
-            .synchronizedMap(new HashMap<String, XSKDataStructureHDBSchemaModel>());
+            .synchronizedMap(new HashMap<>());
     private static final Map<String, XSKDataStructureHDIModel> HDI_PREDELIVERED = Collections
             .synchronizedMap(new HashMap<String, XSKDataStructureHDIModel>());
 
@@ -1069,20 +1069,20 @@ public class XSKDataStructuresSynchronizer extends AbstractSynchronizer {
                 connection = dataSource.getConnection();
                 
                 List<String> sorted = new ArrayList<String>();
-                if (sorted.isEmpty()) {
-                    // something wrong happened with the sorting - probably cyclic dependencies
-                    // we go for the back-up list and try to apply what would succeed
-                    // logger.warn("Probably there are cyclic dependencies!");
-                    sorted.addAll(DATA_STRUCTURE_ENTITIES_MODELS.keySet());
-                    sorted.addAll(DATA_STRUCTURE_TABLES_MODELS.keySet());
-                    sorted.addAll(DATA_STRUCTURE_VIEWS_MODELS.keySet());
+
+                // something wrong happened with the sorting - probably cyclic dependencies
+                // we go for the back-up list and try to apply what would succeed
+                // logger.warn("Probably there are cyclic dependencies!");
+                sorted.addAll(DATA_STRUCTURE_ENTITIES_MODELS.keySet());
+                sorted.addAll(DATA_STRUCTURE_TABLES_MODELS.keySet());
+                sorted.addAll(DATA_STRUCTURE_VIEWS_MODELS.keySet());
 //                    sorted.addAll(DATA_STRUCTURE_CALCULATIONVIEWS_MODELS.keySet());
 //                    sorted.addAll(DATA_STRUCTURE_HDB_CALCULATIONVIEWS_MODELS.keySet());
-                    sorted.addAll(DATA_STRUCTURE_PROCEDURES_MODELS.keySet());
-                    sorted.addAll(DATA_STRUCTURE_TABLEFUNCTIONS_MODELS.keySet());
-                    sorted.addAll(DATA_STRUCTURE_SCHEMAS_MODELS.keySet());
-                    sorted.addAll(DATA_STRUCTURE_HDI_MODELS.keySet());
-                }
+                sorted.addAll(DATA_STRUCTURE_PROCEDURES_MODELS.keySet());
+                sorted.addAll(DATA_STRUCTURE_TABLEFUNCTIONS_MODELS.keySet());
+                sorted.addAll(DATA_STRUCTURE_SCHEMAS_MODELS.keySet());
+                sorted.addAll(DATA_STRUCTURE_HDI_MODELS.keySet());
+
                 
                 boolean hdiSupported = Boolean.parseBoolean(Configuration.get(IXSKEnvironmentVariables.XSK_HDI_SUPPORTED, "true"));
                 if (hdiSupported) {
